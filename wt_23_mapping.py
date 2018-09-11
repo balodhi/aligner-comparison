@@ -92,7 +92,7 @@ def runAlgorithm(commands,logger):
 		fid = open(timedurationoutputfile,'w')
 		for key in commands:
 			
-			if commands[key]['command_type'] == 'aligner' and commands[key]['run_aligner'] == True:
+			if commands[key]['command_type'] == 'aligner' and commands[key]['run_aligner'] == True and i==0:
 				if commands[key]['build_index']:
 					logger.info('building index for '+str(key))
 					logger.info('command: '+str(commands[key]['index_command']))
