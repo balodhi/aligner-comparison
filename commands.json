@@ -1,0 +1,117 @@
+{
+  "hisat": {
+    "command_type": "aligner",
+    "run_aligner": true,
+    "build_index": true,
+    "index_command": "hisat-build -f genome.fa ./hisat_index/hisat_",
+    "aligner_command": "hisat -p 18 -x ./hisat_index/hisat_ -1 fastafile1 -2 fastafile2 -S fastq_file_prefix_hisat.sam",
+    "aligner_variables": ["fastafile1", "fastafile2","fastq_file_prefix"
+        ]
+  },
+  "hisat2": {
+    "command_type": "aligner",
+    "run_aligner": true,
+    "build_index": true,
+    "index_command": "hisat-build -f genome.fa ./hisat2_index/hisat2_",
+    "aligner_command": "hisat2 -p 18 -x ./hisat_index/hisat2_ -1 fastafile1 -2 fastafile2 -S fastq_file_prefix_hisat2.sam",
+    "aligner_variables": ["fastafile1", "fastafile2","fastq_file_prefix"
+        ]
+  },
+  "tophat": {
+    "command_type": "aligner",
+    "run_aligner": true,
+    "build_index": true,
+    "index_command": "bowtie2-build -f genome.fa ./tophat_index/bowtie_",
+    "aligner_command": "tophat ./tophat_index/bowtie_ fastafile1 fastafile2 --output-dir ./tophat_fastq_file_prefix -p 18 -G genes genome",
+    "aligner_variables": ["fastafile1", "fastafile2","fastq_file_prefix", "genes","reference" 
+        ]
+  },
+  "tophat2": {
+    "command_type": "aligner",
+    "run_aligner": true,
+    "build_index": true,
+    "index_command": "bowtie2-build -f genome.fa ./tophat2_index/bowtie_",
+    "aligner_command": "tophat2 ./tophat2_index/bowtie_ fastafile1 fastafile2 --output-dir ./tophat2_fastq_file_prefix -p 18 -G genes genome",
+    "aligner_variables": ["fastafile1", "fastafile2","fastq_file_prefix", "genes","reference" 
+        ]
+  },
+  "star": {
+    "command_type": "aligner",
+    "run_aligner": true,
+    "build_index": true,
+    "index_command": "STAR --runThreadN 18 --runMode genomeGenerate --genomeDir ./star_index --genomeFastaFiles genome.fa --sjdbGTFfile genes.gtf",
+    "aligner_command": "STAR --runThreadN 18 --genomeDir ./star_index/ --sjdbGTFfile genes --readFilesIn fastafile1 fastafile2 --outFileNamePrefix ./fastq_file_prefix_STAR_",
+    "aligner_variables": ["fastafile1", "fastafile2","fastq_file_prefix", "genes" 
+        ]
+  },
+  "crac": {
+    "command_type": "aligner",
+    "run_aligner": true,
+    "build_index": true,
+    "index_command": "crac-index index ./crac_index/crac_ genome.fa",
+    "aligner_command": "crac -i crac_index -k 22 -r fastafile1 fastafile2 --sam fastq_file_prefix_crac.sam --summary + fastq_file_prefix_crac_summary --nb-threads 18",
+    "aligner_variables": ["fastafile1", "fastafile2","fastq_file_prefix" 
+        ]
+  },
+  "gsnap": {
+    "command_type": "aligner",
+    "run_aligner": true,
+    "build_index": true,
+    "index_command": "gmap_build -d gmap -D ./gsnap_index genome.fa",
+    "aligner_command": "gsnap -D ./gsnap_index -d gmap --novelsplicing 1 -t 18 fastafile1 fastafile2 > fastq_file_prefix_gsnap.sam",
+    "aligner_variables": ["fastafile1", "fastafile2","fastq_file_prefix"
+        ]
+  },
+  "soapsplice": {
+    "command_type": "aligner",
+    "run_aligner": true,
+    "build_index": true,
+    "index_command": "/usr/local/bin/SOAPsplice-v1.10/bin/2bwt-builder ./genome.fa ./soapsplice_index/soapsplice_",
+    "aligner_command": "/usr/local/bin/SOAPsplice-v1.10/bin/soapsplice -d ./soapsplice_index/soapsplice.fa.index -1 fastafile1 -2 fastafile2 -I 101 -o ./fastq_file_prefix_soapsplice.sam -p 18 -f 2",
+    "aligner_variables": ["fastafile1", "fastafile2","fastq_file_prefix"
+        ]
+  },
+  "rapmap": {
+    "command_type": "aligner",
+    "run_aligner": true,
+    "build_index": true,
+    "index_command": "rapmap quasiindex -t genome.fa -i ./rapmap_index/rapmap_",
+    "aligner_command": "rapmap quasimap -i ./rapmap_index/rapmap -1 fastafile1 -2 fastafile2 -t 18 -o fastq_file_prefix_rapmap.sam",
+    "aligner_variables": ["fastafile1", "fastafile2","fastq_file_prefix" 
+        ]
+  },
+  "rum": {
+    "command_type": "aligner",
+    "run_aligner": true,
+    "build_index": true,
+    "index_command": "rum_indexes --prefix ./rum_index/",
+    "aligner_command": "rum_runner align --index-dir ./rum_index/Arabidopsis/ --name fastq_file_prefix -o ./RUM --chunks 18 fastafile1 fastafile2",
+    "aligner_variables": ["fastafile1", "fastafile2","fastq_file_prefix" 
+        ]
+  },
+  "subread": {
+    "command_type": "aligner",
+    "run_aligner": true,
+    "build_index": true,
+    "index_command": "subread-buildindex -o ./subread_index/subread_ genome.fa",
+    "aligner_command": "subjunc -i ./subread_index/subread -r fastafile1 -R fastafile2 -T 18 --allJunctions --SAMoutput -o fastq_file_prefix_subread.sam",
+    "aligner_variables": ["fastafile1", "fastafile2","fastq_file_prefix" 
+        ]
+  },
+  "misc" : {
+    "command_type": "general",
+    "delRum":"rm -rf ./RUM",
+    "renameFor": "command2"
+  },
+  "datainfo": {
+    "command_type": "general",
+    "fastq_file_prefix": [
+      "WT_23","SRR5196725","SRR3584159","SRR5005381","SRR4454110"],
+    "repetition": 3,
+    "genes" : "genes.gtf",
+    "fastafile1" : "./Fastq_files/fastq_file_prefix_1.fastq",
+    "fastafile2" : "./Fastq_files/fastq_file_prefix_2.fastq",
+    "reference": "genome.fa"
+        
+  }
+}
